@@ -20,6 +20,10 @@ def Init(_order):
     PitchMat = {}
     BeatMat = {}
 
+def ClearPre():
+    global pre
+    pre = []
+
 def Insert(note):
     global pre, order
     if len(pre) < order:
