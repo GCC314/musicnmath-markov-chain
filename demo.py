@@ -18,4 +18,4 @@ for n in range(40):
 
 musicio.Save_to_xlsx(music, '00.xlsx')
 
-pysynth_e.make_wav(music, fn = '00.wav')
+pysynth_e.make_wav(music, fn = '00.wav', silent = True)
