@@ -2,16 +2,21 @@ import markov
 import pysynth_e
 import musicio
 
-markov.Init(2)
-markov.ClearPre()
+markov.Init(2, 1 * 64)
 
-sample = musicio.Read_from_xlsx('row_ur_boat.xlsx')
-for note in sample:
-    markov.Insert(note)
+samples = ['row_ur_boat.xlsx',
+            'yoake.xlsx',
+            'karakara.xlsx']
 
-music = [("c4", 4), ("c4", 4)]
+for sname in samples:
+    sample = musicio.Read_from_xlsx(sname)
+    markov.ClearPre()
+    for note in sample:
+        markov.Insert(note)
 
-for n in range(40):
+music = markov.RandHead()
+
+for n in range(60):
     newnote = markov.Next(music[-2:])
     if newnote == None: break 
     music.append(newnote)
