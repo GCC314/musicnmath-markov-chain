@@ -2,7 +2,7 @@ import markov
 import pysynth_e
 import musicio
 
-markov.Init(2, 1 * 64)
+markov.Init(2, 1 * 192)
 
 samples = ['row_ur_boat.xlsx',
             'yoake.xlsx',

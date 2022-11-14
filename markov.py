@@ -11,13 +11,13 @@ def __init__():
     Pitch = ['g3','g#3','a3','a#3','b3','c4','c#4','d4','d#4','e4','f4','f#4','g4','g#4','a4','a#4','b4','c5','c#5','d5','d#5','e5','f5']
     Beat = [1, 2, 4, 8, 16, 32]
 
-# cptr, slen take 1/64 note as a unit 
+# rem, slen take 1/192 note as a unit 
 
 def Init(_order, _slen):
     global order
     global pre
-    global slen, cptr
-    order, slen, cptr = _order, _slen, 0
+    global slen, rem
+    order, slen, rem = _order, _slen, _slen
     pre = []
     global PitchMat, BeatMat
     PitchMat = {}
@@ -54,7 +54,18 @@ def Next(cur):
     curBeat = tuple(zip(*cur))[1]
     if not curPitch in PitchMat: return None
     if not curBeat in BeatMat: return None
-    return (RandChoice(PitchMat[curPitch]), RandChoice(BeatMat[curBeat]))
+    pitch = RandChoice(PitchMat[curPitch])
+    global rem, slen
+    remBeat = {}
+    for k, v in curBeat.items():
+        if(rem >= 192 / k):
+            remBeat[k] = v
+    beat = 192 / rem
+    if(len(remBeat) > 0):
+        beat = RandChoice(remBeat)
+    rem -= 192 / beat
+    if(rem == 0): rem = slen
+    return (pitch, beat)
 
 def RandChoice(dic):
     global PitchMat, BeatMat
