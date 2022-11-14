@@ -58,12 +58,12 @@ def Next(cur):
     global rem, slen
     remBeat = {}
     for k, v in BeatMat[curBeat].items():
-        if(rem >= 192 / k):
+        if(rem >= 192 // k):
             remBeat[k] = v
-    beat = 192 / rem
+    beat = 192 // rem
     if(len(remBeat) > 0):
         beat = RandChoice(remBeat)
-    rem -= 192 / beat
+    rem -= 192 // beat
     if(rem == 0): rem = slen
     return (pitch, beat)
 
