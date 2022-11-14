@@ -57,7 +57,7 @@ def Next(cur):
     pitch = RandChoice(PitchMat[curPitch])
     global rem, slen
     remBeat = {}
-    for k, v in curBeat.items():
+    for k, v in BeatMat[curBeat].items():
         if(rem >= 192 / k):
             remBeat[k] = v
     beat = 192 / rem
