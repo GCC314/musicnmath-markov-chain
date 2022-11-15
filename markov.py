@@ -13,19 +13,21 @@ def __init__():
 
 # rem, slen take 1/192 note as a unit 
 
-def Init(_order, _slen):
+def Init(_order):
     global order
     global pre
-    global slen, rem
-    order, slen, rem = _order, _slen, _slen
+    order = _order
     pre = []
     global PitchMat, BeatMat
     PitchMat = {}
     BeatMat = {}
 
-def ClearPre():
+def NewSong(_slen):
     global pre
     pre = []
+    global slen, rem
+    _slen *= 192
+    slen, rem = _slen, _slen
 
 def Insert(note):
     global pre, order
@@ -60,9 +62,11 @@ def Next(cur):
     for k, v in BeatMat[curBeat].items():
         if(rem >= 192 // k):
             remBeat[k] = v
+    # print(remBeat)
     beat = 192 // rem
     if(len(remBeat) > 0):
         beat = RandChoice(remBeat)
+    # print(rem, beat)
     rem -= 192 // beat
     if(rem == 0): rem = slen
     return (pitch, beat)
@@ -87,6 +91,15 @@ def SumHead(totDic):
 
 def RandHead():
     global PitchMat, BeatMat
-    pitch = RandChoice(SumHead(PitchMat))
-    beat = RandChoice(SumHead(BeatMat))
+    pitch, beat = (), ()
+    global slen, rem
+    while True:
+        pitch = RandChoice(SumHead(PitchMat))
+        beat = RandChoice(SumHead(BeatMat))
+        sum = 0
+        for bt in beat: sum += 192 // bt
+        if sum > slen: continue
+        if(sum == slen): sum = 0
+        rem -= sum
+        break    
     return list(zip(*[pitch, beat]))
