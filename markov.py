@@ -2,6 +2,7 @@ import numpy as np
 from itertools import product
 from copy import deepcopy
 import random
+import time
 
 # Note = (pitch, beat)
 
@@ -14,6 +15,7 @@ def __init__():
 # rem, slen take 1/192 note as a unit 
 
 def Init(_order):
+    random.seed(int(time.time()*1000000))
     global order
     global pre
     order = _order
