@@ -6,13 +6,19 @@ import time
 
 # Note = (pitch, beat)
 
-def __init__():
-    global Pitch, Beat
+# File format beat -> duration (*64)
+def F2T(beat):
+    if(beat > 0): return 64 // beat
+    beat = -beat
+    return 32 // beat * 3
 
-    Pitch = ['g3','g#3','a3','a#3','b3','c4','c#4','d4','d#4','e4','f4','f#4','g4','g#4','a4','a#4','b4','c5','c#5','d5','d#5','e5','f5']
-    Beat = [1, 2, 4, 8, 16, 32]
+def T2F(dur):
+    if(dur % 3 == 0):
+        beat = 32 // (dur // 3)
+        return -beat
+    return 64 // dur
 
-# rem, slen take 1/192 note as a unit 
+# rem, slen take 1/64 note as a unit 
 
 def Init(_order):
     random.seed(int(time.time()*1000000))
@@ -54,21 +60,21 @@ def Next(cur):
     curPitch = tuple(zip(*cur))[0]
     curBeat = tuple(zip(*cur))[1]
     if not curPitch in PitchMat: return None
-    if not curBeat in BeatMat: return None
+    # if not curBeat in BeatMat: return None
     pitch = RandChoice(PitchMat[curPitch])
     global rem, slen
     remBeat = {}
     for k, v in BeatMat[curBeat].items():
-        if(rem >= 192 // k):
+        if(rem >= F2T(k)):
             remBeat[k] = v
-    # print(remBeat)
-    beat = 192 // rem
+    print(remBeat)
+    beat = T2F(rem)
     if(len(remBeat) > 0):
         beat = RandChoice(remBeat)
-    # print(rem, beat)
-    rem -= 192 // beat
+    print(rem, beat)
+    rem -= F2T(beat)
     if(abs(rem) < 1e-2):
-        # print("Align")
+        print("Align")
         rem = slen
     return (pitch, beat)
 
@@ -94,13 +100,13 @@ def RandHead(_slen):
     global PitchMat, BeatMat
     pitch, beat = (), ()
     global slen, rem
-    _slen *= 192
+    _slen *= 64
     slen, rem = _slen, _slen
     while True:
         pitch = RandChoice(SumHead(PitchMat))
         beat = RandChoice(SumHead(BeatMat))
         sum = 0
-        for bt in beat: sum += 192 // bt
+        for bt in beat: sum += F2T(bt)
         if sum > slen: continue
         if(sum == slen): sum = 0
         rem -= sum
