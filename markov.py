@@ -24,12 +24,9 @@ def Init(_order):
     PitchMat = {}
     BeatMat = {}
 
-def NewSong(_slen):
+def NewSong():
     global pre
     pre = []
-    global slen, rem
-    _slen *= 192
-    slen, rem = _slen, _slen
 
 def Insert(note):
     global pre, order
@@ -70,7 +67,9 @@ def Next(cur):
         beat = RandChoice(remBeat)
     # print(rem, beat)
     rem -= 192 // beat
-    if(rem == 0): rem = slen
+    if(abs(rem) < 1e-2):
+        # print("Align")
+        rem = slen
     return (pitch, beat)
 
 def RandChoice(dic):
@@ -91,10 +90,12 @@ def SumHead(totDic):
             dic[k] += cnt
     return dic
 
-def RandHead():
+def RandHead(_slen):
     global PitchMat, BeatMat
     pitch, beat = (), ()
     global slen, rem
+    _slen *= 192
+    slen, rem = _slen, _slen
     while True:
         pitch = RandChoice(SumHead(PitchMat))
         beat = RandChoice(SumHead(BeatMat))
