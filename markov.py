@@ -67,14 +67,14 @@ def Next(cur):
     for k, v in BeatMat[curBeat].items():
         if(rem >= F2T(k)):
             remBeat[k] = v
-    print(remBeat)
+    # print(remBeat)
     beat = T2F(rem)
     if(len(remBeat) > 0):
         beat = RandChoice(remBeat)
-    print(rem, beat)
+    # print(rem, beat)
     rem -= F2T(beat)
     if(abs(rem) < 1e-2):
-        print("Align")
+        # print("Align")
         rem = slen
     return (pitch, beat)
 

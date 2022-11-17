@@ -30,9 +30,9 @@ while(curptr < BarNum * 64):
     newnote = markov.Next(music[-Order:])
     if newnote == None: break 
     music.append(newnote)
-    print(newnote)
+    # print(newnote)
     curptr += F2T(newnote[1])
-    print("#", curptr, BarNum * 64)
+    # print("#", curptr, BarNum * 64)
 
 musicio.Save_to_xlsx(music, '00.xlsx') # 指定输出文件名字
 
