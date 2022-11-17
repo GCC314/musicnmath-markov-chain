@@ -18,7 +18,7 @@ for sname in samples:
     for note in sample:
         markov.Insert(note)
 
-A, B = 4, 4 # A / B -> A分音符为1拍，每小节B拍。
+A, B = 4, 4 # A / B -> B分音符为1拍，每小节A拍。
 music = markov.RandHead(A / B)
 
 BarNum = 16 # 小节数
